@@ -23,10 +23,11 @@ const Layout = ({ children }) => {
       }
     }
   `)
-  const height = 3609 - ((1920 - window.innerWidth)*2);
+//   const height = 3609 - ((1920 - window.innerWidth)*2);
+	const height = 3609;
 	return (
 		<div className="landing-page">
-      <div className="landing-page-container" style={{ height, width: window.innerWidth}}>
+      <div className="landing-page-container" style={{ height, width: 1920}}>
 				<Header siteTitle={data.site.siteMetadata.title} />
 				<div className="landing-page-container_main-content">
 					<main>{children}</main>
