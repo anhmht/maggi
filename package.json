@@ -2,7 +2,7 @@
   "name": "maggi",
   "description": "A simple starter to get up and developing quickly with Gatsby",
   "version": "1.0.0",
-   "engines": {
+  "engines": {
     "node": "12.16.3"
   },
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
