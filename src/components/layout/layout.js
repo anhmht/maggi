@@ -12,6 +12,10 @@ import { useStaticQuery, graphql } from "gatsby"
 import Header from "./header"
 import "bulma/css/bulma.css";
 import "./layout.scss"
+// import "./responsive-lg.scss"
+// import "./responsive-md-1.scss"
+// import "./responsive-md-2.scss"
+// import "./responsive-md-3.scss"
 
 const Layout = ({ children }) => {
 	const data = useStaticQuery(graphql`
@@ -23,11 +27,11 @@ const Layout = ({ children }) => {
       }
     }
   `)
-//   const height = 3609 - ((1920 - window.innerWidth)*2);
-	const height = 3609;
+  // if (typeof window === `undefined`) return null;
+  // const height = 3609 - ((1920 - window.innerWidth) * 2);
 	return (
-		<div className="landing-page">
-      <div className="landing-page-container" style={{ height, width: 1920}}>
+		<div className="landing-page" style={{height: '100%'}}>
+      <div className="landing-page-container">
 				<Header siteTitle={data.site.siteMetadata.title} />
 				<div className="landing-page-container_main-content">
 					<main>{children}</main>

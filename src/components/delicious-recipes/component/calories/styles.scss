@@ -1,0 +1,70 @@
+.delicious-recipes{
+  &-calories {
+    margin-bottom: 2em;
+    span {
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+    &_header {
+      width: 90%;
+      margin: auto;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+    }
+    &_body {
+      display: flex;
+      width: 100%;
+      height: 8em;
+      &-left {
+        width: 45%;
+        position: relative;
+        padding-top: 1em;
+        .caloiries {
+          background-repeat: no-repeat !important;
+          background-position: center !important;
+          height: 4.5em;
+          background-size: contain !important;
+        }
+
+        &:before {
+          content : "";
+          position: absolute;
+          right: 0;
+          top: 1.5em;
+          width: 1px;
+          height: 75%;
+          border-right: 1px solid rgba(213, 179, 110, .5);
+        }
+      }
+      &-right {
+        padding-top: 1em;
+        .noodle {
+          background-repeat: no-repeat !important;
+          background-size: contain !important;
+          background-position: center !important;
+          height: 4em;
+        }
+        .food {
+          width: 50%;
+          &-item {
+            background-repeat: no-repeat !important;
+          background-size: contain !important;
+          background-position: center !important;
+          height: 4em;
+          }
+        }
+        p {
+          margin-top: .5em;
+          font-size: .8em;
+          padding: 0 2em;
+          font-weight: 450;
+        }
+        &.multiple {
+          width: 70%;
+          padding-left: .5em;
+          padding-right: .5em;
+        }
+      }
+    }
+  }
+}

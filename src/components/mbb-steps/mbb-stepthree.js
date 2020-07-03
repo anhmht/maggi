@@ -11,7 +11,6 @@ import imgOp7 from "../../images/make-balanced-bowl/step3/7.png";
 import imgOp8 from "../../images/make-balanced-bowl/step3/8.png";
 import imgOp9 from "../../images/make-balanced-bowl/step3/9.png";
 import imgOp10 from "../../images/make-balanced-bowl/step3/10.png";
-import bgStep from "../../images/make-balanced-bowl/step3/bg.png"
 
 const MbbStepThree = ({ selection, selectHandle, lang }) => {
 	const wrapStyle = {
@@ -35,8 +34,13 @@ const MbbStepThree = ({ selection, selectHandle, lang }) => {
 				[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(index => (
 					<div key={index} className={`__item ${selection.indexOf(index) > -1 ? 'active' : ''}`} onClick={() => selectHandle(index)} >
 						<img src={options[index]} alt=""></img>
-						<span dangerouslySetInnerHTML={{ __html: lang[`STEP3_OP${index}_TITLE`] }}>
+						<span className="step-text-des" dangerouslySetInnerHTML={{ __html: lang[`STEP3_OP${index}_TITLE`] }}>
 
+						</span>
+						<span className="st-tooltip">
+							<span dangerouslySetInnerHTML={{ __html: lang[`STEP3_OP${index}_TOOLTIP`] }}>
+							</span>
+							<span className="__arrow"></span>
 						</span>
 					</div>
 				))

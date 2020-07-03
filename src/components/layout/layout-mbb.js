@@ -13,10 +13,10 @@ import "bulma/css/bulma.css";
 import "./layout.scss"
 import "./mbb-style.scss"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, bg }) => {
 	return (
-		<div className="mbb-wrapper">
-			<Header siteTitle="Make a balanced bowl" />
+		<div className="mbb-wrapper" style={{ 'backgroundImage': `url(${bg})` }}>
+			<Header siteTitle="Make a balanced bowl" hideMybb={true} />
 			<main>{children}</main>
 		</div>
 	);

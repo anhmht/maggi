@@ -5,7 +5,10 @@ import { MAKE_BALANCEC_BOWL_LANG as lang } from "../language/en";
 import MbbStepOne from "../components/mbb-steps/mbb-stepone";
 import MbbStepTwo from "../components/mbb-steps/mbb-steptwo";
 import MbbStepThree from "../components/mbb-steps/mbb-stepthree";
-import bgImage from "../images/make-balanced-bowl/mbb-bg-1-op.png";
+import MbbStepFinal from "../components/mbb-steps/mbb-final";
+import WarningModal from "../components/mbb-steps/warning-modal";
+import bgImage from "../images/make-balanced-bowl/mbb-bg-1.jpg";
+import bgImageLarge from "../images/make-balanced-bowl/final/bg-op.jpg";
 
 const STEPS = [
   {
@@ -16,14 +19,20 @@ const STEPS = [
     id: 1,
     text: lang.STEP_1,
     options: [{}],
+    min: 1,
+    max: 1,
   },
   {
     id: 2,
     text: lang.STEP_2,
+    min: 1,
+    max: 2,
   },
   {
     id: 3,
     text: lang.STEP_3,
+    min: 1,
+    max: 2,
   },
   {
     id: 4,
@@ -41,9 +50,16 @@ export default class MakeBalancedBowlPage extends Component {
         3: [],
       },
     },
+    waringModalVisible: false,
+    warningModalMes: "",
   };
   onSelectStep1 = (index) => {
-    this.updateActiveStep(1, index);
+    // this.updateActiveStep(1, index);
+    const { activeStep } = this.state;
+    activeStep.selectedItem[1] = [index];
+    this.setState({
+      activeStep: activeStep,
+    });
   };
   onSelectStep2 = (index) => {
     this.updateActiveStep(2, index);
@@ -56,6 +72,10 @@ export default class MakeBalancedBowlPage extends Component {
     let selection = activeStep.selectedItem[step];
     const index = selection.indexOf(stepIndex);
     if (index == -1) {
+      if (selection.length >= 2) {
+        this.openWarningModal(lang.MAX_WARNING);
+        return;
+      }
       selection.push(stepIndex);
     } else {
       selection.splice(index, 1);
@@ -69,6 +89,15 @@ export default class MakeBalancedBowlPage extends Component {
 
   nextStep = () => {
     const { activeStep } = this.state;
+    const min = (STEPS.find((it) => it.id === activeStep.id) || {}).min;
+    if (
+      min &&
+      activeStep.selectedItem[activeStep.id] &&
+      activeStep.selectedItem[activeStep.id].length < min
+    ) {
+      this.openWarningModal(lang.MIN_WARNING);
+      return;
+    }
     activeStep.id = activeStep.id + 1;
     this.setState({
       activeStep: activeStep,
@@ -81,15 +110,39 @@ export default class MakeBalancedBowlPage extends Component {
       activeStep: activeStep,
     });
   };
+  makeNewBowl = () => {
+    const activeStep = {
+      id: 0,
+      selectedItem: {
+        1: [],
+        2: [],
+        3: [],
+      },
+    };
+    this.setState({
+      activeStep: activeStep,
+    });
+  };
+  openWarningModal = (mess) => {
+    this.setState({
+      waringModalVisible: true,
+      warningModalMes: mess,
+    });
+  };
+  closeWarningModal = () => {
+    this.setState({
+      waringModalVisible: false,
+    });
+  };
 
   renderStep(step) {
     switch (step) {
       case 0:
         return (
           <div className="step-0">
-            {lang.INTRO_TITLE}
-            <h2 className="sub-title">{lang.INTRO_BIG_TITLE}</h2>
-            <p>{lang.INTRO_DES}</p>
+            <div className="step-dt-header">{lang.INTRO_TITLE}</div>
+            <h2 className="mbb-sub-title">{lang.INTRO_BIG_TITLE}</h2>
+            <p className="step-des">{lang.INTRO_DES}</p>
             <button className="btn btn-primary" onClick={this.nextStep}>
               {lang.START_NOW}
             </button>
@@ -99,7 +152,7 @@ export default class MakeBalancedBowlPage extends Component {
       case 1:
         return (
           <div>
-            <p>{lang.STEP1_TITLE}</p>
+            <div className="step-dt-header">{lang.STEP1_TITLE}</div>
             <MbbStepOne
               lang={lang}
               selection={this.state.activeStep.selectedItem["1"]}
@@ -118,7 +171,7 @@ export default class MakeBalancedBowlPage extends Component {
       case 2:
         return (
           <div>
-            <p>{lang.STEP2_TITLE}</p>
+            <div className="step-dt-header">{lang.STEP2_TITLE}</div>
             <MbbStepTwo
               lang={lang}
               selection={this.state.activeStep.selectedItem["2"]}
@@ -137,7 +190,7 @@ export default class MakeBalancedBowlPage extends Component {
       case 3:
         return (
           <div>
-            <p>{lang.STEP3_TITLE}</p>
+            <div className="step-dt-header">{lang.STEP3_TITLE}</div>
             <MbbStepThree
               lang={lang}
               selection={this.state.activeStep.selectedItem["3"]}
@@ -154,33 +207,65 @@ export default class MakeBalancedBowlPage extends Component {
           </div>
         );
       case 4:
-        return <div>DOne</div>;
+        return (
+          <div>
+            <MbbStepFinal
+              lang={lang}
+              selection={this.state.activeStep.selectedItem}
+            />
+            <div className="final-action">
+              <button className="btn btn-primary" onClick={this.makeNewBowl}>
+                {lang.MAKE_NEW_BALANCED_BOWl}
+              </button>
+              <div>
+                <span>{lang.SHARE_RECIPE}</span>
+              </div>
+            </div>
+          </div>
+        );
     }
   }
   render() {
     return (
       <>
-        <Layout>
+        <Layout bg={this.state.activeStep.id === 4 ? bgImageLarge : bgImage}>
           <SEO title={lang.MAKE_A_BALANCED_BOWL} />
-          <div
-            className="mbb-main-content"
-            style={{
-              backgroundImage: `url(${bgImage})`,
-            }}
-          >
+          <div className="mbb-main-content">
             <div className="step-content-wrapper">
               <div className="step-header">
                 <h1 className="title">{lang.MAKE_YOUR_BALANCED_BOWL}</h1>
                 <ul>
                   {STEPS.map((item) => (
-                    <li>{item.text}</li>
+                    <li
+                      key={item.id}
+                      className={
+                        this.state.activeStep.id === item.id ? "active" : ""
+                      }
+                    >
+                      {item.text}
+                    </li>
                   ))}
                 </ul>
               </div>
               <div className="step-content">
                 {this.renderStep(this.state.activeStep.id)}
+                {[1, 2, 3].indexOf(this.state.activeStep.id) > -1 ? (
+                  <div className="hover-hint">
+                    <img
+                      src={require("../images/make-balanced-bowl/hint.png")}
+                      alt=""
+                    />
+                    <span>{lang.HOVER_HINT}</span>
+                  </div>
+                ) : null}
               </div>
             </div>
+            {this.state.waringModalVisible ? (
+              <WarningModal
+                message={this.state.warningModalMes}
+                closeModal={this.closeWarningModal}
+              />
+            ) : null}
           </div>
         </Layout>
       </>
